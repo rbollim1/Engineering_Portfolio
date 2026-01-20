@@ -3,7 +3,7 @@
 This repository hosts my engineering project portfolio, rendered as static HTML and served via GitHub Pages.
 
 ## Live Portfolio
-https://rbollim1.github.io/ENG_Portfolio
+https://rbollim1.github.io/Engineering_Portfolio
 
 ## Projects
 - **Thumb Inverse Kinematics Optimization**  
