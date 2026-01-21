@@ -21,3 +21,4 @@ This site hosts my engineering project portfolio, rendered as static HTML and se
 - Python
 - Quarto (QMD → HTML)
 - NumPy / SciPy / Matplotlib
+- Autodesk Fusion360
