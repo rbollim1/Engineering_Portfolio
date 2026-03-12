@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thumb IK Optimization — Ryan Bollimpalli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back</a>
+      <ul class="nav-links">
+        <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="project-header">
+    <div class="container">
+      <p class="eyebrow">Kinematics · Numerical Methods</p>
+      <h1>Thumb Inverse Kinematics Optimization</h1>
+      <p class="subtitle">Damped Jacobian pseudoinverse + null-space optimization under joint constraints (Python)</p>
+      <div class="tags">
+        <span class="tag tag-purple">Kinematics</span>
+        <span class="tag tag-purple">Numerical Methods</span>
+        <span class="tag tag-purple">Python</span>
+        <span class="tag tag-purple">Optimization</span>
+        <span class="tag tag-purple">Linear Algebra</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <main class="project-body">
+    <div class="container">
+
+      <h2>Summary</h2>
+      <div class="summary-box">
+        <p>
+          This project models a human thumb as a constrained multi-DOF kinematic chain and implements
+          a numerical inverse kinematics solver that moves the thumb tip to a 3D target efficiently
+          and smoothly, using a two-stage strategy: stable convergence via a damped least-squares
+          Jacobian pseudoinverse, followed by motion-quality improvement through null-space optimization
+          with joint-limit penalty terms.
+        </p>
+      </div>
+      <ul>
+        <li>Built forward kinematics for a 5-DOF thumb model using DH parameters</li>
+        <li>Implemented iterative IK with damping for numerical stability</li>
+        <li>Derived null-space directions and optimized updates to minimize joint movement</li>
+        <li>Added constraint penalties to keep motion within plausible joint angle limits</li>
+      </ul>
+      <p style="color:var(--muted); font-size:13px; font-family:var(--mono);">Work presented as part of an E21 final project.</p>
+
+      <h2>Problem and Objectives</h2>
+      <p>
+        The human thumb is kinematically redundant: multiple joint configurations can place the thumb
+        tip at the same 3D position. A naive IK approach may reach the target, but with inefficient
+        or unrealistic joint motion.
+      </p>
+      <ul>
+        <li>Build a forward kinematics model for the thumb</li>
+        <li>Implement an iterative IK solver to reach target tip positions</li>
+        <li>Improve solution quality using null-space reasoning and constraint-aware optimization</li>
+      </ul>
+
+      <h2>Thumb Model and Constraints</h2>
+      <p>
+        The thumb was modeled with biologically motivated joints and joint limits to ensure
+        plausible, anatomically valid solutions.
+      </p>
+      <figure class="figure">
+        <img src="images/thumb_anatomy.png" alt="Thumb joint anatomy" />
+        <figcaption>Thumb joint anatomy used to motivate the kinematic structure and constraints.</figcaption>
+      </figure>
+
+      <h2>Forward Kinematics (Denavit–Hartenberg)</h2>
+      <p>
+        To compute thumb tip position from joint angles, we used a standard DH convention. This
+        provides a consistent way to build the homogeneous transforms link-by-link.
+      </p>
+      <figure class="figure">
+        <img src="images/denavit_hartenberg_diagram.png" alt="DH frame assignment" />
+        <figcaption>DH frame assignment intuition across successive joints.</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="images/denavit_hartenberg_matrices.png" alt="DH transform matrices" />
+        <figcaption>Standard DH transform form and decomposition into rotation + translation.</figcaption>
+      </figure>
+
+      <h2>Iterative IK — Damped Jacobian Pseudoinverse</h2>
+      <p>
+        IK is solved numerically by iteratively updating joint angles using a first-order
+        linearization of the forward kinematics. Damping improves stability and conditioning:
+        it reduces sensitivity when the Jacobian is ill-conditioned, prevents large joint updates
+        near singularities, and yields smoother convergence.
+      </p>
+      <figure class="figure">
+        <img src="images/linearization.png" alt="First-order linearization" />
+        <figcaption>First-order linearization of forward kinematics around the current configuration.</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="images/optimizing_dtheta.png" alt="Jacobian-based IK update" />
+        <figcaption>Linearization and Jacobian-based update framing for iterative IK.</figcaption>
+      </figure>
+
+      <h2>Null-Space Optimization</h2>
+      <p>
+        Because the thumb is redundant, joint updates exist that change configuration without
+        changing end-effector position. This lets us select among many valid updates and choose
+        one that improves motion quality — smaller joint movement, fewer limit violations.
+      </p>
+      <figure class="figure">
+        <img src="images/jacobian_nullspace.png" alt="Null-space concept" />
+        <figcaption>Null-space concept: joint changes that preserve end-effector position to first order.</figcaption>
+      </figure>
+
+      <h3>Computing the null space</h3>
+      <p>
+        The Jacobian was computed numerically and a null-space basis was derived from its
+        reduced row echelon form.
+      </p>
+      <figure class="figure">
+        <img src="images/solving_for_jacobian_nullspace.png" alt="Jacobian RREF null space" />
+        <figcaption>Jacobian → RREF → basis vectors spanning the null space.</figcaption>
+      </figure>
+
+      <h2>Constraint Handling — Penalty Terms</h2>
+      <p>
+        To keep motion physically plausible, illegal joint angles were penalized during
+        optimization. The objective minimizes joint movement while adding a strong cost whenever
+        angles violate bounds.
+      </p>
+      <figure class="figure">
+        <img src="images/navigating_nullspace_code.png" alt="Null-space traversal and penalty code" />
+        <figcaption>Null-space traversal and penalty-based objective implementation (Python).</figcaption>
+      </figure>
+
+      <h2>Results</h2>
+      <p>
+        The solver converged toward target thumb-tip positions with stable error decay across
+        iterative steps. Resulting trajectories were smooth and remained within anatomical limits.
+      </p>
+      <figure class="figure">
+        <img src="images/results.png" alt="3D thumb configuration and error convergence" />
+        <figcaption>Example 3D thumb configuration and error vs. iteration for the iterative IK solver.</figcaption>
+      </figure>
+
+      <h2>What I Would Do Next</h2>
+      <ul>
+        <li>Replace penalty-only constraints with constrained optimization (projection or inequality-constrained solvers)</li>
+        <li>Improve robustness near singularities using adaptive damping / step-size control</li>
+        <li>Add secondary objectives (energy proxy, comfort metrics, joint preference priors)</li>
+        <li>Validate against recorded thumb motion data to evaluate realism beyond endpoint accuracy</li>
+      </ul>
+
+      <h2>Skills &amp; Tools</h2>
+      <div class="skills-grid">
+        <span class="skill-item">Forward &amp; inverse kinematics</span>
+        <span class="skill-item">DH parameters</span>
+        <span class="skill-item">Damped least-squares pseudoinverse</span>
+        <span class="skill-item">Null-space reasoning</span>
+        <span class="skill-item">Penalty-based optimization</span>
+        <span class="skill-item">Python</span>
+        <span class="skill-item">Numerical linear algebra</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Ryan Bollimpalli</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">← All Projects</a></li>
+          <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Stitching & Homography — Ryan Bollimpalli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back</a>
+      <ul class="nav-links">
+        <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="project-header">
+    <div class="container">
+      <p class="eyebrow">Computer Vision · E27</p>
+      <h1>Panoramic Image Stitching via Homography</h1>
+      <p class="subtitle">Point correspondence, homography estimation, and image warping to produce seamless panoramas (Python + OpenCV)</p>
+      <div class="tags">
+        <span class="tag tag-purple">Computer Vision</span>
+        <span class="tag tag-purple">Python</span>
+        <span class="tag tag-purple">OpenCV</span>
+        <span class="tag tag-purple">Homography</span>
+        <span class="tag tag-purple">Linear Algebra</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <main class="project-body">
+    <div class="container">
+
+      <h2>Summary</h2>
+      <div class="summary-box">
+        <p>
+          This project implements a full panoramic image stitching pipeline from scratch.
+          Given two overlapping images and a set of manually selected point correspondences,
+          the system estimates a projective homography transform, warps one image into the
+          coordinate frame of the other, and blends them into a seamless wide-field composite.
+        </p>
+      </div>
+      <ul>
+        <li>Implemented point-correspondence homography estimation using least-squares DLT</li>
+        <li>Applied projective warping to align image coordinate frames</li>
+        <li>Produced high-resolution stitched panoramas across multiple scenes</li>
+        <li>Proved correctness of the homography derivation in the written report</li>
+      </ul>
+
+      <h2>Approach</h2>
+
+      <h3>Point correspondences</h3>
+      <p>
+        Corresponding points between image pairs were selected manually using a custom
+        point-picking tool (<code>pick_points.py</code>). Each correspondence
+        provides a constraint on the 3×3 projective homography matrix <strong>H</strong>,
+        which maps points in one image plane to the other via:
+      </p>
+      <pre class="code-block">x' ~ H · x   (in homogeneous coordinates)</pre>
+      <p>
+        With at least 4 correspondences, <strong>H</strong> is fully determined (8 DOF)
+        and solved in closed form via the Direct Linear Transform (DLT).
+      </p>
+
+      <h3>Homography estimation</h3>
+      <p>
+        Each point pair contributes two linear equations in the entries of <strong>H</strong>.
+        Stacking these into a system <strong>Ah = 0</strong> and solving via SVD yields the
+        least-squares homography. Translation and rotation components were validated
+        independently through a geometric proof included in the written report.
+      </p>
+
+      <h3>Image warping and stitching</h3>
+      <p>
+        With <strong>H</strong> estimated, the source image is warped into the reference
+        frame using inverse mapping and bilinear interpolation. The warped image is then
+        composited with the reference image to produce the final panorama.
+      </p>
+
+      <h2>Results</h2>
+      <p>
+        The pipeline was tested on multiple scene pairs including outdoor snow scenes and
+        indoor laptop/desk environments. The stitched panorama below was produced from
+        two overlapping frames with manually selected point correspondences.
+      </p>
+
+      <h3>Input images</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin: 24px 0;">
+        <figure class="figure" style="margin:0">
+          <img src="images/snow_left.png" alt="Left input frame" />
+          <figcaption>Left input frame</figcaption>
+        </figure>
+        <figure class="figure" style="margin:0">
+          <img src="images/snow_right.png" alt="Right input frame" />
+          <figcaption>Right input frame</figcaption>
+        </figure>
+      </div>
+
+      <h3>Stitched panorama</h3>
+      <figure class="figure">
+        <img src="images/output.jpg" alt="Stitched panorama output" />
+        <figcaption>Final stitched panorama — homography-warped composite of two overlapping frames.</figcaption>
+      </figure>
+
+      <h2>Skills &amp; Tools</h2>
+      <div class="skills-grid">
+        <span class="skill-item">Projective geometry</span>
+        <span class="skill-item">Homography estimation (DLT)</span>
+        <span class="skill-item">Image warping &amp; compositing</span>
+        <span class="skill-item">OpenCV</span>
+        <span class="skill-item">NumPy / linear algebra</span>
+        <span class="skill-item">Python</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Ryan Bollimpalli</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">← All Projects</a></li>
+          <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

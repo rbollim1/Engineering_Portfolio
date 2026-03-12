@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural Network Classifier — Ryan Bollimpalli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back</a>
+      <ul class="nav-links">
+        <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="project-header">
+    <div class="container">
+      <p class="eyebrow">Computer Vision · E27 Final Project</p>
+      <h1>MNIST Digit Classification:<br>Single-Layer vs. Convolutional Neural Network</h1>
+      <p class="subtitle">Comparative study of optimizer performance on MNIST across two network architectures (TensorFlow / Keras)</p>
+      <div class="tags">
+        <span class="tag tag-purple">Deep Learning</span>
+        <span class="tag tag-purple">Computer Vision</span>
+        <span class="tag tag-purple">Python</span>
+        <span class="tag tag-purple">TensorFlow</span>
+        <span class="tag tag-purple">CNN</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <main class="project-body">
+    <div class="container">
+
+      <h2>Summary</h2>
+      <div class="summary-box">
+        <p>
+          This project implements and compares two neural network architectures for handwritten
+          digit classification on MNIST: a flat single-layer softmax classifier and a
+          multi-layer convolutional neural network. The study evaluates the effect of different
+          optimizers on training dynamics, convergence speed, and final accuracy, with results
+          visualized through training curves and confusion matrices.
+        </p>
+      </div>
+      <ul>
+        <li>Implemented a single-layer (784→10 softmax) baseline classifier</li>
+        <li>Built a 3-block CNN (Conv2D → MaxPool → Conv2D → MaxPool → Conv2D → Dense)</li>
+        <li>Compared SGD, Adam, and RMSProp across both architectures</li>
+        <li>Analyzed per-class error via confusion matrices and classification reports</li>
+      </ul>
+
+      <h2>Architectures</h2>
+
+      <h3>Method 1 — Single-layer network</h3>
+      <p>
+        A minimal baseline: each 28×28 image is flattened to a 784-dim vector and passed
+        directly to a 10-unit softmax output layer. No hidden layers. Trained with
+        sparse categorical cross-entropy and multiple optimizers to isolate the effect of
+        optimization strategy on a linear classifier.
+      </p>
+      <pre class="code-block">Input (784) → Dense(10, softmax)</pre>
+
+      <h3>Method 2 — Convolutional neural network</h3>
+      <p>
+        A deeper architecture that preserves spatial structure through three convolutional
+        blocks before a fully connected head. The network learns hierarchical features —
+        edges, curves, and digit-level patterns — before classifying.
+      </p>
+      <pre class="code-block">Input (28×28×1)
+  → Conv2D(32, 3×3) + ReLU → MaxPool(2×2)
+  → Conv2D(64, 3×3) + ReLU → MaxPool(2×2)
+  → Conv2D(64, 3×3) + ReLU
+  → Flatten → Dense(64, ReLU) → Dense(10, softmax)</pre>
+
+      <h2>Optimizer Comparison</h2>
+      <p>
+        Both architectures were trained under identical conditions with three optimizers —
+        <strong>SGD</strong>, <strong>Adam</strong>, and <strong>RMSProp</strong> — to
+        evaluate their effect on convergence speed and final test accuracy. Training and
+        validation accuracy were tracked per epoch, and confusion matrices were generated
+        on the held-out test set for each configuration.
+      </p>
+      <p>Key findings:</p>
+      <ul>
+        <li>The CNN substantially outperformed the single-layer model across all optimizers</li>
+        <li>Adaptive optimizers (Adam, RMSProp) converged faster than SGD in both architectures</li>
+        <li>Confusion matrices revealed consistent error patterns on visually similar digit pairs (e.g., 4/9, 3/5)</li>
+      </ul>
+
+      <h2>Hypothesis Testing</h2>
+      <p>
+        Beyond reporting accuracy, the project formulated and tested explicit hypotheses
+        about optimizer behavior — predicting convergence speed rankings before training
+        and validating them against empirical results. This structured approach to
+        experimental design was noted in grader feedback.
+      </p>
+
+      <h2>Skills &amp; Tools</h2>
+      <div class="skills-grid">
+        <span class="skill-item">Convolutional neural networks</span>
+        <span class="skill-item">TensorFlow / Keras</span>
+        <span class="skill-item">Optimizer analysis</span>
+        <span class="skill-item">Confusion matrices</span>
+        <span class="skill-item">MNIST / image classification</span>
+        <span class="skill-item">Python</span>
+        <span class="skill-item">Matplotlib / Seaborn</span>
+        <span class="skill-item">scikit-learn</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Ryan Bollimpalli</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">← All Projects</a></li>
+          <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

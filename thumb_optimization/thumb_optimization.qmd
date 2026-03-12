@@ -1,0 +1,153 @@
+---
+title: "Thumb Inverse Kinematics Optimization"
+subtitle: "Damped Jacobian pseudoinverse + null-space optimization under joint constraints (Python)"
+author: "Ryan Bollimpalli"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    theme: cosmo
+---
+## Summary
+
+This project models a human thumb as a constrained multi-DOF kinematic chain and implements a numerical inverse kinematics (IK) solver that moves the thumb tip to a 3D target efficiently and smoothly.
+
+I implemented a two-stage strategy:
+
+1) **Stable convergence** using a **damped least-squares Jacobian pseudoinverse** (iterative IK), and  
+2) **Motion-quality improvement** by searching the **Jacobian null space** to reduce unnecessary joint motion while enforcing joint limits via penalty terms.
+
+*Work presented as part of an E21 final project.*
+
+**Core contributions**
+- Built forward kinematics for a 5-DOF thumb model using DH parameters  
+- Implemented iterative IK with damping for numerical stability  
+- Derived / computed null-space directions and optimized updates to minimize joint movement  
+- Added constraint penalties to keep motion within plausible joint angle limits  
+
+---
+
+## Problem and Objectives
+
+The human thumb is kinematically redundant: multiple joint configurations can place the thumb tip at the same 3D position. A naive IK approach may reach the target, but with inefficient or unrealistic joint motion.
+
+Project objectives:
+- Build a forward kinematics model for the thumb  
+- Implement an iterative IK solver to reach target tip positions  
+- Improve the quality of solutions using null-space reasoning and constraint-aware optimization  
+
+---
+
+## Thumb Model and Constraints
+
+We modeled the thumb with biologically motivated joints and joint limits to ensure plausible solutions.
+
+![](images/thumb_anatomy.png){width=75%}
+
+*Thumb joint anatomy used to motivate the kinematic structure and constraints.*
+
+---
+
+## Forward Kinematics (Denavit–Hartenberg)
+
+To compute thumb tip position from joint angles, we used a standard DH convention. This provides a consistent way to build the homogeneous transforms link-by-link.
+
+![](images/denavit_hartenberg_diagram.png){width=92%}
+
+*DH frame assignment intuition across successive joints.*
+
+The homogeneous transform for a DH link was used to assemble the full forward kinematics chain:
+
+![](images/denavit_hartenberg_matrices.png){width=92%}
+
+*Standard DH transform form and decomposition into rotation + translation.*
+
+---
+
+## Iterative Inverse Kinematics (Damped Jacobian Pseudoinverse)
+
+We solve IK numerically by iteratively updating joint angles using a first-order linearization of the forward kinematics:
+
+![](images/linearization.png){width=70%}
+
+*First-order linearization of forward kinematics around the current configuration.*
+
+Using this approximation, we choose \(\Delta\theta\) that reduces endpoint error while avoiding unstable, high-magnitude updates near singularities.
+
+Damping improves stability and conditioning:
+
+- reduces sensitivity when \(J\) is ill-conditioned  
+- prevents excessively large joint updates  
+- yields smoother convergence in practice  
+
+![](images/optimizing_dtheta.png){width=85%}
+
+*Linearization and Jacobian-based update framing for iterative IK.*
+
+---
+
+## Null-Space Optimization (Reducing Unnecessary Joint Motion)
+
+Because the thumb is redundant, there exist joint updates that change configuration without (approximately) changing the end-effector position. This lets us select among many valid updates and choose one that improves “motion quality” (e.g., smaller joint movement, fewer limit violations).
+
+![](images/jacobian_nullspace.png){width=85%}
+
+*Null-space concept: joint changes that preserve end-effector position to first order.*
+
+### Computing the null space
+
+We computed the Jacobian numerically and derived a null-space basis from its reduced row echelon form / span representation.
+
+![](images/solving_for_jacobian_nullspace.png){width=92%}
+
+*Jacobian → RREF → basis vectors spanning the null space.*
+
+---
+
+## Constraint Handling (Penalty Terms)
+
+To keep motion physically plausible, we penalized illegal joint angles during optimization. The idea was to minimize joint movement while adding a strong cost whenever angles violated bounds.
+
+![](images/navigating_nullspace_code.png){width=95%}
+
+*Null-space traversal and penalty-based objective implementation (Python).*
+
+---
+
+## Results
+
+The solver converged toward target thumb-tip positions and reduced error over iterative steps. The resulting trajectories were smooth and showed stable error decay.
+
+![](images/results.png){width=95%}
+
+*Example 3D thumb configuration and error vs. iteration for the iterative IK solver.*
+
+---
+
+## What I Would Do Next
+
+If extended, the most valuable improvements would be:
+
+- Replace penalty-only constraints with constrained optimization (e.g., projection or inequality-constrained solvers)  
+- Improve robustness near singularities using adaptive damping / step-size control  
+- Add secondary objectives (e.g., energy proxy, comfort metrics, joint preference priors)  
+- Validate against recorded thumb motion data to evaluate realism beyond endpoint accuracy  
+
+---
+
+## Skills and Tools Demonstrated
+
+- Forward & inverse kinematics (DH parameters, Jacobians)  
+- Damped least-squares pseudoinverse IK  
+- Null-space reasoning for redundant manipulators  
+- Constraint handling with penalty-based optimization  
+- Python (numerical methods; linear algebra; optimization workflow)  
+
+
+
+
+
+
+
+

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robotic Barnacle Nauplii — Ryan Bollimpalli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <a href="../index.html" class="nav-back">Back</a>
+      <ul class="nav-links">
+        <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="project-header">
+    <div class="container">
+      <p class="eyebrow">Robotics · Biomechanics</p>
+      <h1>Robotic Barnacle Nauplii <span style="color:var(--muted);font-weight:400">(Nauplius IV)</span></h1>
+      <p class="subtitle">Biomimetic swimming robot at low Reynolds number (Re ≈ 2)</p>
+      <div class="tags">
+        <span class="tag">Biomechanics</span>
+        <span class="tag">Robotics</span>
+        <span class="tag">CAD / Fusion360</span>
+        <span class="tag">Fluid Mechanics</span>
+        <span class="tag">PCB Design</span>
+        <span class="tag">3D Printing</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <main class="project-body">
+    <div class="container">
+
+      <h2>Summary</h2>
+      <div class="summary-box">
+        <p>
+          This project investigates how barnacle nauplii achieve propulsion in a
+          low–Reynolds-number regime and translates their swimming kinematics into a
+          mechanically actuated robotic model. I focused on correcting biological motion
+          measurements, modeling appendage kinematics, and designing a mechanical stroke
+          generation system capable of reproducing biologically accurate motion while
+          operating at an equivalent Reynolds number.
+        </p>
+      </div>
+      <ul>
+        <li>Re-measured appendage kinematics using joint-referenced angles</li>
+        <li>Modeled stroke dynamics as sinusoidal functions of time</li>
+        <li>Designed a mechanical transmission to replicate phase-offset appendage motion</li>
+        <li>Developed an experimental setup to match Reynolds number via fluid viscosity</li>
+      </ul>
+
+      <h2>Problem and Constraints</h2>
+      <p>
+        Barnacle nauplii (Nauplius IV stage) swim at Reynolds numbers on the order of
+        <strong>Re ≈ 2</strong>, where viscous forces dominate and inertia is negligible.
+        In this regime:
+      </p>
+      <ul>
+        <li>Reciprocal motion does not generate constant net propulsion</li>
+        <li>Stroke asymmetry and phase timing are essential</li>
+        <li>Scaling the organism up requires non-geometric similarity</li>
+      </ul>
+      <p>The project goal was to design a robotic analog that:</p>
+      <ul>
+        <li>Reproduces nauplius swimming kinematics</li>
+        <li>Operates at an equivalent Reynolds number</li>
+        <li>Fits within experimental tank and fabrication constraints</li>
+      </ul>
+
+      <h2>Kinematic Modeling of Appendage Motion</h2>
+      <p>Accurate mechanical replication required biologically meaningful measurements of appendage motion.</p>
+
+      <h3>Limitations of prior measurements</h3>
+      <p>
+        Previous measurements defined appendage angles relative to the <strong>larval centroid</strong>,
+        rather than about each appendage's hinge point. This introduced systematic error and obscured
+        joint-level kinematics.
+      </p>
+      <figure class="figure">
+        <img src="images/old_anglevstime.png" alt="Original appendage angle measurements" />
+        <figcaption>Original appendage angle measurements defined relative to the larval centroid.</figcaption>
+      </figure>
+
+      <h3>Joint-referenced angle measurement</h3>
+      <p>
+        I remeasured appendage angles directly about their hinge points using frame-by-frame image
+        annotation in Photoshop. Reference axes were defined at each joint to extract true rotational motion.
+      </p>
+      <figure class="figure">
+        <img src="images/new_angle_photoshop.png" alt="Joint-based angle measurement" />
+        <figcaption>Joint-based angle measurement using annotated reference axes.</figcaption>
+      </figure>
+
+      <h3>Sinusoidal modeling</h3>
+      <p>
+        The corrected joint angles were modeled as sinusoidal functions of time, enabling explicit
+        control of phase offsets, stroke amplitude, and asymmetry — and direct translation into
+        mechanical actuation constraints.
+      </p>
+      <figure class="figure">
+        <img src="images/new_anglevstime.png" alt="Sinusoidal fits of appendage joint angles" />
+        <figcaption>Sinusoidal fits of appendage joint angles versus time.</figcaption>
+      </figure>
+
+      <h2>Mechanical Stroke Generation</h2>
+      <p>
+        The kinematic models informed the design of a mechanical transmission system capable of
+        producing coordinated, phase-offset appendage motion. The mechanism converts rotary input
+        into controlled rotational motion at each appendage joint.
+      </p>
+      <figure class="figure">
+        <img src="images/stroke_mechanism.png" alt="CAD model of stroke generation system" />
+        <figcaption>Fusion360 CAD model of the mechanical stroke generation system.</figcaption>
+      </figure>
+
+      <h3>Control electronics</h3>
+      <p>
+        A custom PCB was designed to support synchronized actuation and power delivery for multiple
+        appendages, enabling future closed-loop control and repeatable experimental trials.
+      </p>
+      <figure class="figure">
+        <img src="images/PCB_board.png" alt="Custom PCB layout" />
+        <figcaption>Custom PCB layout for appendage control.</figcaption>
+      </figure>
+
+      <h2>Physical Prototype</h2>
+      <p>
+        Structural components were 3D printed to validate form factor, internal volume constraints,
+        and appendage mounting geometry.
+      </p>
+      <figure class="figure">
+        <img src="images/shell.png" alt="3D-printed outer shell" />
+        <figcaption>3D-printed outer shell of the robotic nauplius body.</figcaption>
+      </figure>
+
+      <h2>Reynolds Number Matching via Fluid Viscosity</h2>
+      <p>
+        Because the robotic model operates at a much larger scale than the biological larva, Reynolds
+        number matching was achieved by increasing fluid viscosity. A temperature-controlled water bath
+        and capillary viscometer were used to characterize candidate fluids as a function of temperature.
+      </p>
+      <figure class="figure">
+        <img src="images/viscometer.png" alt="Viscosity measurement setup" />
+        <figcaption>Viscosity measurement setup using a temperature-controlled bath and capillary viscometer.</figcaption>
+      </figure>
+
+      <h2>Results &amp; Next Steps</h2>
+      <p><strong>Completed</strong></p>
+      <ul>
+        <li>Viscosity–temperature characterization for multiple candidate fluids</li>
+        <li>Selected <strong>corn syrup</strong> as working fluid — stable viscosity consistently achieves Re ≈ 2 within experimental temperature range</li>
+      </ul>
+      <p><strong>Next steps</strong></p>
+      <ul>
+        <li>Integrate actuation with fluid testing to directly observe net propulsion</li>
+        <li>Extend planar appendage motion to fully three-dimensional stroke kinematics</li>
+      </ul>
+
+      <h2>Skills &amp; Tools</h2>
+      <div class="skills-grid">
+        <span class="skill-item">Biomimetic system design</span>
+        <span class="skill-item">Low-Re fluid mechanics</span>
+        <span class="skill-item">Motion capture &amp; kinematic modeling</span>
+        <span class="skill-item">Mechanical transmission design</span>
+        <span class="skill-item">Fusion360 CAD</span>
+        <span class="skill-item">Rapid prototyping</span>
+        <span class="skill-item">PCB layout</span>
+        <span class="skill-item">Experimental design</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Ryan Bollimpalli</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">← All Projects</a></li>
+          <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
