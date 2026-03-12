@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ryan Bollimpalli — Engineering Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <span class="nav-logo">rb<span>.</span>portfolio</span>
+      <ul class="nav-links">
+        <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Engineering Portfolio</p>
+      <h1>Ryan Bollimpalli</h1>
+      <p class="hero-sub">
+        Engineering &amp; Economics student at Swarthmore College. Currently at LSE on a year abroad.
+        I build things at the intersection of robotics, numerical methods, and systems design.
+      </p>
+      <div class="hero-links">
+        <a href="#about" class="btn btn-primary">About</a>
+        <a href="https://github.com/rbollim1" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <p class="section-label">About</p>
+      <div class="about-grid">
+        <div class="about-bio">
+          <p>
+            I'm a BSE Engineering / BA Economics double major at <strong>Swarthmore College</strong>
+            (GPA 3.8, class of 2027), currently on a year abroad at the
+            <strong>London School of Economics</strong> studying Economics and Data Science.
+          </p>
+          <p>
+            My engineering work sits at the intersection of robotics, biomechanics, and
+            numerical methods. I've done robotics research at
+            <strong>Swarthmore College</strong> (barnacle nauplii locomotion),
+            <strong>ASU's Logos Robotics Lab</strong> (computer vision and robotic grasping
+            with ROS), and <strong>Stanford's GPS Lab</strong> (geospatial AIS data analysis
+            for illegal fishing detection in MATLAB).
+          </p>
+          <p>
+            Outside the lab, I founded the <strong>Engineers for a Sustainable World</strong>
+            chapter at Swarthmore and led a 20+ member team to build a biodiesel fuel generator.
+            This spring I'm joining <strong>Knight Frank Investment Management</strong> as an
+            AI &amp; Business Optimization intern, supporting firm-wide AI implementation across
+            investment and ESG workflows.
+          </p>
+        </div>
+        <div class="about-meta">
+          <div class="meta-block">
+            <p class="meta-label">Currently</p>
+            <p class="meta-value">London School of Economics</p>
+            <p class="meta-sub">The General Course · Year Abroad</p>
+          </div>
+          <div class="meta-block">
+            <p class="meta-label">Home Institution</p>
+            <p class="meta-value">Swarthmore College</p>
+            <p class="meta-sub">BSE Engineering · BA Economics · 2027</p>
+          </div>
+          <div class="meta-block">
+            <p class="meta-label">Upcoming</p>
+            <p class="meta-value">Knight Frank IM</p>
+            <p class="meta-sub">AI &amp; Business Optimization Intern</p>
+          </div>
+          <div class="meta-block">
+            <p class="meta-label">Contact</p>
+            <p class="meta-sub"><a href="mailto:ryan.bollimpalli@outlook.com">ryan.bollimpalli@outlook.com</a></p>
+            <p class="meta-sub"><a href="mailto:rbollim1@swarthmore.edu">rbollim1@swarthmore.edu</a></p>
+            <p class="meta-sub"><a href="tel:+14807179335">+1 (480) 717-9335</a></p>
+            <p class="meta-sub"><a href="https://www.linkedin.com/in/ryan-bollimpalli/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Projects</p>
+
+      <div class="project-list">
+
+        <a class="project-card" href="barnacle-nauplii/barnacle-nauplii.html">
+          <div class="project-card-header">
+            <h3>Robotic Barnacle Nauplii</h3>
+            <span class="project-arrow">→</span>
+          </div>
+          <p class="project-desc">
+            Biomimetic swimming robot replicating nauplius-stage barnacle locomotion at low
+            Reynolds number (Re ≈ 2). Covers kinematic modeling, mechanical transmission
+            design, PCB layout, and Reynolds number matching via fluid viscosity.
+          </p>
+          <div class="tags">
+            <span class="tag">Biomechanics</span>
+            <span class="tag">Robotics</span>
+            <span class="tag">CAD / Fusion360</span>
+            <span class="tag">Fluid Mechanics</span>
+            <span class="tag">PCB Design</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="thumb_optimization/thumb_optimization.html">
+          <div class="project-card-header">
+            <h3>Thumb Inverse Kinematics Optimization</h3>
+            <span class="project-arrow">→</span>
+          </div>
+          <p class="project-desc">
+            Numerical IK solver for a 5-DOF human thumb model using a damped Jacobian
+            pseudoinverse and null-space optimization to minimize joint motion under
+            anatomical constraints.
+          </p>
+          <div class="tags">
+            <span class="tag tag-purple">Kinematics</span>
+            <span class="tag tag-purple">Numerical Methods</span>
+            <span class="tag tag-purple">Python</span>
+            <span class="tag tag-purple">Optimization</span>
+          </div>
+        </a>
+
+<a class="project-card" href="cv-neural-network/cv-neural-network.html">
+          <div class="project-card-header">
+            <h3>MNIST Digit Classification: Single-Layer vs. CNN</h3>
+            <span class="project-arrow">→</span>
+          </div>
+          <p class="project-desc">
+            Comparative study of a flat softmax classifier and a 3-block convolutional
+            neural network on MNIST, analyzing the effect of SGD, Adam, and RMSProp
+            on convergence and per-class accuracy via confusion matrices.
+          </p>
+          <div class="tags">
+            <span class="tag tag-purple">Deep Learning</span>
+            <span class="tag tag-purple">TensorFlow</span>
+            <span class="tag tag-purple">CNN</span>
+            <span class="tag tag-purple">Python</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Ryan Bollimpalli</span>
+        <ul class="footer-links">
+          <li><a href="https://github.com/rbollim1" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/ryan-bollimpalli/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="mailto:ryan.bollimpalli@outlook.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
